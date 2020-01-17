@@ -1,0 +1,17 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "IncrementalAndroidExample", "IncrementalAndroidExample\IncrementalAndroidExample.fsproj", "{D332B02F-8F61-4673-B2FD-52811E2EDE6A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D332B02F-8F61-4673-B2FD-52811E2EDE6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D332B02F-8F61-4673-B2FD-52811E2EDE6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D332B02F-8F61-4673-B2FD-52811E2EDE6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D332B02F-8F61-4673-B2FD-52811E2EDE6A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
