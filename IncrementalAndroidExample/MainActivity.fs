@@ -8,15 +8,18 @@ type MainActivity() =
     inherit Activity()
     override this.OnCreate(bundle) =
         base.OnCreate(bundle)
+        
+        let model = cval <| UpDownScreen.Model 0
 
         let mutable reloadUiF = ignore
-        let r =
-            UpDownScreen.view' this (fun f _ ->
-                UpDownScreen.update f
+        let avalView =
+            UpDownScreen.view this (fun f _ ->
+                transact (fun _ -> model.Value <- f model.Value) 
                 reloadUiF())
+                model
 
         let rec reloadUi() =
-            r
+            avalView
             |> AVal.force
             |> this.SetContentView
         reloadUiF <- reloadUi

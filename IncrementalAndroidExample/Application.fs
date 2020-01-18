@@ -13,7 +13,10 @@ module Dsl =
     let vbox ctx children =
         let l = new LinearLayout(ctx)
         l.Orientation <- Orientation.Vertical
-        children |> List.iter ^ fun ch -> l.AddView(ch)
+        children
+        |> List.iter ^ fun (ch : #View) ->
+            if not <| isNull (ch.Parent) then (ch.Parent :?> ViewGroup).RemoveView(ch)
+            l.AddView(ch)
         l :> View
 
     let button ctx text onClick =
