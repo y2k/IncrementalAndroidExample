@@ -65,7 +65,8 @@
     <Compile Include="Properties\AssemblyInfo.fs" />
     <None Include="Properties\AndroidManifest.xml" />
     <AndroidAsset Include="Assets\AboutAssets.txt" />
-    <Compile Include="Application.fs" />
+    <Compile Include="Infrastructure.fs" />
+    <Compile Include="TodoListScreen.fs" />
     <Compile Include="UpDownScreen.fs" />
     <Compile Include="MainActivity.fs" />
     <None Include="packages.config" />
