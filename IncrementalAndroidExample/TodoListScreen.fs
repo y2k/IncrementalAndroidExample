@@ -41,11 +41,12 @@ module View =
         todos
         |> AList.map ^ viewItem ctx
         |> AList.toAVal
-        |> AVal.map ^ fun xs -> vbox ctx (Seq.toList xs)
+        |> AVal.map (Seq.toList >> vbox ctx)
 
     let view ctx amodel dispatch =
-        avbox ctx
-            [ AVal.bind (fun model -> editText ctx model.text (fun e -> dispatch ^ Domain.edit e)) amodel
-              AVal.constant ^ button ctx "Add" ^ fun _ -> dispatch Domain.addTodo
-              AVal.constant ^ button ctx "Clear" ^ fun _ -> dispatch Domain.clear
-              AVal.bind (fun model -> viewItems ctx model.todos) amodel ]
+        [ AVal.bind (fun model -> editText ctx model.text (fun e -> dispatch ^ Domain.edit e)) amodel
+          AVal.constant ^ button ctx "Random" ^ fun _ -> dispatch Domain.testRandom
+          AVal.constant ^ button ctx "Add" ^ fun _ -> dispatch Domain.addTodo
+          AVal.constant ^ button ctx "Remove all" ^ fun _ -> dispatch Domain.clear
+          AVal.bind (fun model -> viewItems ctx model.todos) amodel ]
+        |> avbox ctx

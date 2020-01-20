@@ -55,8 +55,8 @@ module Utils =
             let cd = AVal.map2 (fun a b -> a, b) c d
             AVal.map2 (fun (a, b) (c, d) -> f a b c d) ab cd
 
-    let createLazyView avalue fnew fpost =
-        let mutable cached : _ option = None
+    let createLazyView avalue fnew fpostAction =
+        let mutable cached = None
         avalue
         |> AVal.map ^ fun value ->
             let l =
@@ -65,24 +65,21 @@ module Utils =
                     let l = fnew()
                     cached <- Some l
                     l
-            fpost l value
+            fpostAction l value
             l :> View
 
-    let avbox' ctx (children : _ list aval) =
-        createLazyView children (fun _ ->
-            let l = new LinearLayout(ctx)
-            l.Orientation <- Orientation.Vertical
-            l) (fun l children ->
-            children
-            |> List.iteri ^ fun i (ch : #View) ->
-                printfn ""
-                if ch.Parent <> (l :> IViewParent) then
-                    if not <| isNull (ch.Parent) then (ch.Parent :?> ViewGroup).RemoveView(ch)
-                    if i < l.ChildCount then l.RemoveViewAt i
-                    l.AddView(ch, i))
+    let avbox ctx (vs : #View aval list) =
+        let avbox' ctx (children : _ list aval) =
+            createLazyView children (fun _ -> new LinearLayout(ctx, Orientation = Orientation.Vertical)) (fun l children ->
+                children
+                |> List.iteri ^ fun i (ch : #View) ->
+                    printfn ""
+                    if ch.Parent <> (l :> IViewParent) then
+                        if not <| isNull (ch.Parent) then (ch.Parent :?> ViewGroup).RemoveView(ch)
+                        if i < l.ChildCount then l.RemoveViewAt i
+                        l.AddView(ch, i))
 
-    let avbox ctx (vs : _ list) =
-        AVal.map4 (fun a b c d -> [ a; b; c; d ]) vs.[0] vs.[1] vs.[2] vs.[3] |> avbox' ctx
+        List.foldBack (fun b a -> AVal.map2 (fun b c -> c :: b) a b) vs (cval [] :> _ list aval) |> avbox' ctx
 
     let editText ctx atext onChanged =
         let mutable cached : EditText option = None
@@ -98,15 +95,13 @@ module Utils =
                 printfn ""
                 onChangeDisposable.Dispose()
                 et.Text <- text
-                onChangeDisposable <-
-                    et.AfterTextChanged |> Observable.subscribe ^ fun e -> onChanged (string e.Editable)
+                onChangeDisposable <- et.AfterTextChanged |> Observable.subscribe ^ fun e -> onChanged (string e.Editable)
                 et
             |> Option.defaultWith ^ fun _ ->
                 printfn ""
                 let et = new EditText(ctx)
                 et.Text <- text
-                onChangeDisposable <-
-                    et.AfterTextChanged |> Observable.subscribe ^ fun e -> onChanged (string e.Editable)
+                onChangeDisposable <- et.AfterTextChanged |> Observable.subscribe ^ fun e -> onChanged (string e.Editable)
                 cached <- Some et
                 et
             |> fun x -> x :> View) atext
