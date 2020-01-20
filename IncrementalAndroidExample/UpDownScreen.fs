@@ -23,7 +23,7 @@ module View =
             [ AVal.constant ^ button ctx "+" ^ fun _ -> dispatch (operation ^ (+) 1)
               model
               |> AVal.map fget
-              |> AVal.map (fun x -> textView ctx (string x))
+              |> AVal.map ^ fun x -> textView ctx (string x)
               AVal.constant ^ button ctx "none" ^ fun _ -> dispatch id
               AVal.constant ^ button ctx "+" ^ fun _ -> dispatch (operation ^ flip (-) 1) ]
 
