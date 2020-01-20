@@ -12,7 +12,7 @@ type ViewModel =
     { text : string cval
       todos : Todo clist }
     static member init =
-        { text = cval "xxx"
+        { text = cval ""
           todos = clist [] }
 
 module Domain =
@@ -47,5 +47,5 @@ module View =
         avbox ctx
             [ AVal.bind (fun model -> editText ctx model.text (fun e -> dispatch ^ Domain.edit e)) amodel
               AVal.constant ^ button ctx "Add" ^ fun _ -> dispatch Domain.addTodo
-              AVal.constant ^ button ctx "Clear" ^ fun _ -> dispatch Domain.testRandom
+              AVal.constant ^ button ctx "Clear" ^ fun _ -> dispatch Domain.clear
               AVal.bind (fun model -> viewItems ctx model.todos) amodel ]
