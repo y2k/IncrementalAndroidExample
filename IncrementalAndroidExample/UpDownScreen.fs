@@ -23,12 +23,13 @@ module View =
             [ AVal.constant ^ button ctx "+" ^ fun _ -> dispatch (operation ^ (+) 1)
               model
               |> AVal.map fget
-              |> AVal.map ^ fun x -> textView ctx (string x)
+              |> AVal.map string
+              |> atextView ctx
               AVal.constant ^ button ctx "none" ^ fun _ -> dispatch id
               AVal.constant ^ button ctx "+" ^ fun _ -> dispatch (operation ^ flip (-) 1) ]
 
     let view ctx model dispatch =
         avbox ctx
             [ viewCounter ctx model dispatch (fun x -> x.counter1) (fun x y -> { x with counter1 = y })
-              AVal.constant ^ textView ctx "\n===================================\n"
+              atextView ctx ^ AVal.constant "\n===================================\n"
               viewCounter ctx model dispatch (fun x -> x.counter2) (fun x y -> { x with counter2 = y }) ]

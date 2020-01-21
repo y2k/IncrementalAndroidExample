@@ -35,13 +35,13 @@ module Domain =
 
 module View =
     let viewItem ctx (Todo x) =
-        textView ctx ^ sprintf "'%s'" x
+        atextView ctx ^ AVal.constant ^ sprintf "'%s'" x
 
     let viewItems ctx (todos : Todo alist) =
         todos
         |> AList.map ^ viewItem ctx
         |> AList.toAVal
-        |> AVal.map (Seq.toList >> vbox ctx)
+        |> AVal.bind (Seq.toList >> avbox ctx)
 
     let view ctx amodel dispatch =
         [ AVal.bind (fun model -> editText ctx model.text (fun e -> dispatch ^ Domain.edit e)) amodel

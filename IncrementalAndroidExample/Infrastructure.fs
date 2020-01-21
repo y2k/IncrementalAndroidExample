@@ -15,6 +15,7 @@ module Dsl =
     open Android.Widget
     open Android.Views
 
+    [<Obsolete>]
     let vbox ctx children =
         let l = new LinearLayout(ctx)
         l.Orientation <- Orientation.Vertical
@@ -30,6 +31,7 @@ module Dsl =
         v.Click.Add onClick
         v :> View
 
+    [<Obsolete>]
     let editText' ctx text onChanged =
         let v = new EditText(ctx)
         v.Text <- text
@@ -37,6 +39,7 @@ module Dsl =
             v.AfterTextChanged |> Observable.subscribe ^ fun e -> onChanged (e.Editable.ToString())
         v :> View, d
 
+    [<Obsolete>]
     let textView ctx text =
         let v = new TextView(ctx)
         v.Text <- text
@@ -105,3 +108,9 @@ module Utils =
                 cached <- Some et
                 et
             |> fun x -> x :> View) atext
+
+    let atextView ctx =
+        AVal.map ^ fun text ->
+            let v = new TextView(ctx)
+            v.Text <- text
+            v :> View
