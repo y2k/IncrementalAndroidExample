@@ -3,7 +3,7 @@
 open Android.App
 open FSharp.Data.Adaptive
 
-module Screen = UpDownScreen
+module Screen = TodoListScreen
 
 [<Activity(Label = "Android Incremental", MainLauncher = true, Icon = "@mipmap/icon")>]
 type MainActivity() =

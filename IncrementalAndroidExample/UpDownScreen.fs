@@ -2,7 +2,6 @@ module IncrementalAndroidExample.UpDownScreen
 
 open FSharp.Data.Adaptive
 open Infrastructure
-open Infrastructure.Utils
 open Infrastructure.Dsl
 
 type ViewModel =
@@ -19,17 +18,17 @@ module View =
             |> (fget
                 >> op
                 >> fset x)
-        avbox ctx
+        vbox ctx
             [ AVal.constant ^ button ctx "+" ^ fun _ -> dispatch (operation ^ (+) 1)
               model
               |> AVal.map fget
               |> AVal.map string
-              |> atextView ctx
+              |> textView ctx
               AVal.constant ^ button ctx "none" ^ fun _ -> dispatch id
               AVal.constant ^ button ctx "+" ^ fun _ -> dispatch (operation ^ flip (-) 1) ]
 
     let view ctx model dispatch =
-        avbox ctx
+        vbox ctx
             [ viewCounter ctx model dispatch (fun x -> x.counter1) (fun x y -> { x with counter1 = y })
-              atextView ctx ^ AVal.constant "\n===================================\n"
+              textView ctx ^ AVal.constant "\n===================================\n"
               viewCounter ctx model dispatch (fun x -> x.counter2) (fun x y -> { x with counter2 = y }) ]
